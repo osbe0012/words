@@ -21,41 +21,39 @@ csrf.init_app(app)
 
 @app.route('/')
 def index():
-    form = WordForm()
-    return render_template("index.html", form=form)
+  form = WordForm()
+  return render_template("index.html", form=form)
 
 
 @app.route('/words', methods=['POST','GET'])
 def letters_2_words():
+  form = WordForm()
+  if form.validate_on_submit():
+      letters = form.avail_letters.data
+  else:
+      return render_template("index.html", form=form)
 
-    form = WordForm()
-    if form.validate_on_submit():
-        letters = form.avail_letters.data
-    else:
-        return render_template("index.html", form=form)
+  with open('sowpods.txt') as f:
+      good_words = set(x.strip().lower() for x in f.readlines())
 
-    with open('sowpods.txt') as f:
-        good_words = set(x.strip().lower() for x in f.readlines())
+  word_set = set()
+  for l in range(3,len(letters)+1):
+      for word in itertools.permutations(letters,l):
+          w = "".join(word)
+          if w in good_words:
+              word_set.add(w)
 
-    word_set = set()
-    for l in range(3,len(letters)+1):
-        for word in itertools.permutations(letters,l):
-            w = "".join(word)
-            if w in good_words:
-                word_set.add(w)
-
-    return render_template('wordlist.html',
-        wordlist=sorted(word_set),
-        name="CS4131")
-
-
+  return render_template('wordlist.html',
+      wordlist=sorted(word_set),
+      name="CS4131")
 
 
 @app.route('/proxy')
 def proxy():
-    result = requests.get(request.args['url'])
-    resp = Response(result.text)
-    resp.headers['Content-Type'] = 'application/json'
-    return resp
+  mwKey = 'f9863492-b5fd-44b1-8a55-d80a273e1b54'
+  result = requests.get(request.args['https://www.dictionaryapi.com/api/v3/references/collegiate/json/' + word + '?key=' + mwKey])
+  resp = Response(result.text)
+  resp.headers['Content-Type'] = 'application/json'
+  return resp
 
 
