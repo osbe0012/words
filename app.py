@@ -1,4 +1,4 @@
-from flask import Flask, request, Response, render_template
+from flask import Flask, request, Response, render_template, jsonify
 import requests
 import itertools
 from flask_wtf.csrf import CSRFProtect
@@ -20,11 +20,6 @@ app.config["SECRET_KEY"] = "row the boat"
 csrf.init_app(app)
 
 @app.route('/')
-def home():
-    form = WordForm()
-    return render_template("index.html", form=form)
-
-@app.route('/index')
 def index():
     form = WordForm()
     return render_template("index.html", form=form)
