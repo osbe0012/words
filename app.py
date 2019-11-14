@@ -19,20 +19,20 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "row the boat"
 csrf.init_app(app)
 
-@app.route('/templates')
+@app.route('index')
 def index():
     form = WordForm()
-    return render_template("index.html", form=form)
+    return render_template("/templates/index.html", form=form)
 
 
-@app.route('/templates', methods=['POST','GET'])
+@app.route('words', methods=['POST','GET'])
 def letters_2_words():
 
     form = WordForm()
     if form.validate_on_submit():
         letters = form.avail_letters.data
     else:
-        return render_template("index.html", form=form)
+        return render_template("/templates/index.html", form=form)
 
     with open('sowpods.txt') as f:
         good_words = set(x.strip().lower() for x in f.readlines())
