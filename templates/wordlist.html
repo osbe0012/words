@@ -3,7 +3,9 @@
 {% block content %}
 <main>
     {% for word in wordlist: %}
-        <div class="wordbox">{{ word }}</div>
+        <form action="/proxy" class="wordbox">
+			<input type="submit" value={{ word }}>
+		</form>
     {% endfor %}
 </main>
 {% endblock %}
