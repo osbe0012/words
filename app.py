@@ -24,13 +24,13 @@ def home():
     form = WordForm()
     return render_template("/templates/index.html", form=form)
 
-@app.route('index')
+@app.route('/index')
 def index():
     form = WordForm()
     return render_template("/templates/index.html", form=form)
 
 
-@app.route('words', methods=['POST','GET'])
+@app.route('/words', methods=['POST','GET'])
 def letters_2_words():
 
     form = WordForm()
