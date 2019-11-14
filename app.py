@@ -22,12 +22,12 @@ csrf.init_app(app)
 @app.route('/')
 def index():
     form = WordForm()
-    return render_template("index.html", form=form)
+    return render_template("/templates/index.html", form=form)
 
 @app.route('index')
 def index():
     form = WordForm()
-    return render_template("index.html", form=form)
+    return render_template("/templates/index.html", form=form)
 
 
 @app.route('words', methods=['POST','GET'])
@@ -37,9 +37,9 @@ def letters_2_words():
     if form.validate_on_submit():
         letters = form.avail_letters.data
     else:
-        return render_template("index.html", form=form)
+        return render_template("/templates/index.html", form=form)
 
-    with open('sowpods.txt') as f:
+    with open('/templates/sowpods.txt') as f:
         good_words = set(x.strip().lower() for x in f.readlines())
 
     word_set = set()
@@ -49,7 +49,7 @@ def letters_2_words():
             if w in good_words:
                 word_set.add(w)
 
-    return render_template('wordlist.html',
+    return render_template('/templates/wordlist.html',
         wordlist=sorted(word_set),
         name="CS4131")
 
