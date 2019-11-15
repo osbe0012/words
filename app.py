@@ -7,6 +7,7 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import Regexp
 import re
 import ast
+import json
 
 class WordForm(FlaskForm):
   avail_letters = StringField("Letters", validators= [
@@ -53,12 +54,10 @@ def proxy(wordList, word):
   mwKey = 'f9863492-b5fd-44b1-8a55-d80a273e1b54'
   print(f'Requesting: https://www.dictionaryapi.com/api/v3/references/collegiate/json/{word}?key={mwKey}')
   result = requests.get(f'https://www.dictionaryapi.com/api/v3/references/collegiate/json/{word}?key={mwKey}')
-  print("Result: " + str(result))
   resultJSON = result.json()
-  print("Result JSON shortdef: " + str(resultJSON[0]['shortdef']))
+  print("Result JSON shortdef: " + str(resultJSON[0]['shortdef'][0]))
   reworkedList = ast.literal_eval(wordList)
-  print("Reworded List: " + str(reworkedList))
   return render_template('wordList.html',
-  wordlist=reworkedList,
-  resultJSON=resultJSON,
-  match=word)
+    wordlist=reworkedList,
+    resultJSON=resultJSON,
+    match=word)
