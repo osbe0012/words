@@ -57,7 +57,7 @@ def proxy(wordList, word):
   resultJSON = result.json()
   print("Result JSON shortdef: " + str(resultJSON[0]['shortdef'][0]))
   reworkedList = ast.literal_eval(wordList)
-  return render_template('wordList.html',
+  return render_template('wordlist.html',
     wordlist=reworkedList,
     resultJSON=resultJSON,
     match=word)
