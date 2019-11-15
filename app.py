@@ -3,16 +3,20 @@ import requests
 import itertools
 from flask_wtf.csrf import CSRFProtect
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, SelectField
 from wtforms.validators import Regexp
 import re
 import ast
 import json
 
 class WordForm(FlaskForm):
-  avail_letters = StringField("Letters", validators= [
-      Regexp(r'^[a-z]+$', message="must contain letters only")
-  ])
+  avail_letters = StringField("Letters:", validators= [
+    Regexp(r'^[a-z]+$', message="Must contain letters only")])
+  wordLengthDropDownMenu = SelectField("Specific Word Length:", choices=[
+    ('0','All'), ('3','3'), ('4','4'), ('5','5'), ('6','6'), ('7','7'), ('8','8'),
+    ('9','9'), ('10','10')])
+  patternTextBox = StringField("Pattern to Match:", validators=[
+  Regexp(r'^$|^[a-z\.]+$', message="Must contain letters and/or '.' only")])
   submit = SubmitField("Go")
 
 
@@ -29,12 +33,15 @@ def index():
 
 @app.route('/words', methods=['POST','GET'])
 def letters_2_words():
+  # If errors, load index.html
   form = WordForm()
   if form.validate_on_submit():
     letters = form.avail_letters.data
   else:
+    # Add enforcement requirements here
     return render_template("index.html", form=form)
-
+  
+  # Otherwise load wordlist.html
   with open('sowpods.txt') as f:
     good_words = set(x.strip().lower() for x in f.readlines())
 
@@ -55,7 +62,6 @@ def proxy(wordList, word):
   print(f'Requesting: https://www.dictionaryapi.com/api/v3/references/collegiate/json/{word}?key={mwKey}')
   result = requests.get(f'https://www.dictionaryapi.com/api/v3/references/collegiate/json/{word}?key={mwKey}')
   resultJSON = result.json()
-  print("Result JSON shortdef: " + str(resultJSON[0]['shortdef'][0]))
   reworkedList = ast.literal_eval(wordList)
   return render_template('wordlist.html',
     wordlist=reworkedList,

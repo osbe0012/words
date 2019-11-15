@@ -6,7 +6,10 @@ main {
 
 .wordbox {
   text-align: center;
-  border: solid white;
   margin: 3px;
   position: relative;
+}
+
+.wordButton {
+	width: 100%;
 }

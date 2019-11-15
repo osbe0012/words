@@ -4,14 +4,18 @@
 	<main>
 		{% for word in wordlist: %}
 			<form action="{{ url_for('proxy', wordList=wordlist, word=word) }}" class="wordbox">
-				<input type="submit" value={{ word }}>
+				<input class="wordButton" type="submit" value={{ word }}>
 				{% if resultJSON and match == word %}
 					<div>
-						{% if resultJSON[0]['shortdef'] != [] %}
-							{{ resultJSON[0]['shortdef'][0] }}
+						{% if resultJSON[0] is not string %}
+							{% if resultJSON[0]['shortdef'] != [] %}
+								{{ resultJSON[0]['shortdef'][0] }}
+							{% else %}
+								{{ resultJSON[0]['cxs'][0]['cxl'] + " " +
+									resultJSON[0]['cxs'][0]['cxtis'][0]['cxt'] }}
+							{% endif %}
 						{% else %}
-							{{ resultJSON[0]['cxs'][0]['cxl'] + " " +
-								resultJSON[0]['cxs'][0]['cxtis'][0]['cxt'] }}
+							No definition
 						{% endif %}
 					</div>
 				{% endif %}
