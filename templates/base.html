@@ -1,16 +1,23 @@
 <html>
     <head>
         <link rel="stylesheet" href="/static/wordstyle.css">
+		<script src="/static/scripts.js"></script> 
     </head>
     <body>
         {% block navbar %}
-        <nav>
-            <h1>Word List Program for {{name}}</h1>
-        </nav>
+			<nav>
+				<h1>Word Finder by Christopher Osberg</h1>
+			</nav>
         {% endblock %}
 
         {% block content %}
-        default content
+			default content
+        {% endblock %}
+		
+		{% block footer %}
+			<div>
+				<a href="">Github Repository</a>
+			</div>
         {% endblock %}
     </body>
 </html>
