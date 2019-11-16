@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "_formhelpers.html" import render_field %}
 {% block content %}
-    <form action="/words" method="post">
+    <form id="inputForm" action="/words" method="post">
         {{ form.hidden_tag() }}
         {{ render_field(form.avail_letters) }}
 		<br>
@@ -9,6 +9,12 @@
         <br>
 		{{ render_field(form.patternTextBox) }}
         <br>
+		{% if inputError %}
+			<ul class=errors>
+				<li class="error">{{ inputError }}</li>
+			</ul>
+		{% endif %}
+		<br>
         {{form.submit()}}
     </form>
 {% endblock %}

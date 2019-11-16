@@ -6,7 +6,8 @@
 			<form action="{{ url_for('proxy', wordList=wordlist, word=word) }}" class="wordbox">
 				<input class="wordButton" type="submit" value={{ word }}>
 				{% if resultJSON and match == word %}
-					<div>
+					<div id="definitionPane">
+						<button class="closeButton" onclick="closeDefinition(this)" type="button">X</button>
 						{% if resultJSON[0] is not string %}
 							{% if resultJSON[0]['shortdef'] != [] %}
 								{{ resultJSON[0]['shortdef'][0] }}

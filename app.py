@@ -35,11 +35,18 @@ def index():
 def letters_2_words():
   # If errors, load index.html
   form = WordForm()
-  if form.validate_on_submit():
+  # Enforces dropdown and pattern length matching and proper input
+  if (len(form.patternTextBox.data) == 0 or \
+    int(form.wordLengthDropDownMenu.data) == 0 or \
+    len(form.patternTextBox.data) == int(form.wordLengthDropDownMenu.data)) and \
+    form.validate_on_submit():
     letters = form.avail_letters.data
   else:
-    # Add enforcement requirements here
-    return render_template("index.html", form=form)
+    if len(form.patternTextBox.data) != int(form.wordLengthDropDownMenu.data):
+      inputError = "Word length and pattern length must match, or one must be unset."
+      return render_template("index.html", form=form, inputError=inputError)
+    else:
+      return render_template("index.html", form=form)
   
   # Otherwise load wordlist.html
   with open('sowpods.txt') as f:
@@ -50,8 +57,13 @@ def letters_2_words():
     for word in itertools.permutations(letters,l):
       w = "".join(word)
       if w in good_words:
-        word_set.add(w)
-
+        # Filter by length if dropdown is specified, or no filter if == 0
+        if  int(form.wordLengthDropDownMenu.data) == 0 or \
+          len(w) == int(form.wordLengthDropDownMenu.data):
+            # Filter by pattern, or no filter if == ''
+            if form.patternTextBox.data == '' or \
+              re.search("^"+form.patternTextBox.data+"$", w):
+              word_set.add(w)
   return render_template('wordlist.html',
     wordlist=sorted(word_set, key=len))
 
