@@ -65,8 +65,9 @@ def letters_2_words():
             if form.patternTextBox.data == '' or \
               re.search("^"+pattern+"$", w):
               word_set.add(w)
+  sortedList = sorted(word_set, key=lambda x: (len(x),x))
   return render_template('wordlist.html',
-    wordlist=sorted(word_set, key=len))
+    wordlist=sortedList)
 
 
 @app.route('/proxy/<wordList>/<word>')
