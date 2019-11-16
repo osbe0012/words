@@ -13,7 +13,7 @@ class WordForm(FlaskForm):
   avail_letters = StringField("Letters:", validators= [
     Regexp(r'^[a-z]+$', re.IGNORECASE, message="Must contain letters only")])
   wordLengthDropDownMenu = SelectField("Specific Word Length:", choices=[
-    ('0','All'), ('3','3'), ('4','4'), ('5','5'), ('6','6'), ('7','7'), ('8','8'),
+    ('0','Any'), ('3','3'), ('4','4'), ('5','5'), ('6','6'), ('7','7'), ('8','8'),
     ('9','9'), ('10','10')])
   patternTextBox = StringField("Pattern to Match:", validators=[
   Regexp(r'^$|^[a-z\.]+$', re.IGNORECASE, message="Must contain letters and/or '.' only")])
